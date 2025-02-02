@@ -3,7 +3,7 @@ AI at your fingertips. Literally ✨🤖👇
 
 Usage
 -----
-Select text and press 'Ctrl+Space'
+Select Text and Press 'Ctrl+Space'
 
 Install
 ```
@@ -17,5 +17,5 @@ python app.py
 
 Exit
 ```
-Ctrl+Q
+Press Ctrl+Q
 ```
