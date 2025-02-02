@@ -1,4 +1,4 @@
-# MouseAI
+# MouseAI (Work in Progress)
 AI at your fingertips. Literally ✨🤖👇
 
 Usage
