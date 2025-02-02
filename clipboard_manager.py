@@ -2,8 +2,6 @@ import win32clipboard
 import keyboard
 import time
 
-# PROGRAM TO GET SELECTED TEXT
-
 
 class ClipboardManager:
     def get_selected_text(self):
