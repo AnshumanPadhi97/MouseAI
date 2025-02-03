@@ -13,18 +13,18 @@ class TextMonitor(QObject):
         self.window = FloatingWindow()
         self.text_selected.connect(self.window.show_text)
 
-    def start_monitoring(self):
-        keyboard.add_hotkey('ctrl+space', self.on_hotkey)
-        keyboard.hook(self.on_key_event)
+    def on_key_event(self, event):
+        if event.name == 'q' and event.event_type == 'down' and keyboard.is_pressed('ctrl'):
+            self.exit_application()
 
     def exit_application(self):
         print("Cleaning up and exiting...")
         keyboard.unhook_all()
         QCoreApplication.quit()
 
-    def on_key_event(self, event):
-        if event.name == 'q' and event.event_type == 'down' and keyboard.is_pressed('ctrl'):
-            self.exit_application()
+    def start_monitoring(self):
+        keyboard.add_hotkey('ctrl+space', self.on_hotkey)
+        keyboard.hook(self.on_key_event)
 
     def on_hotkey(self):
         selected_text = self.clipboard_manager.get_selected_text()
