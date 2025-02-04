@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QPushButton, QHBoxLayout, QLineEdit
 from PyQt5.QtCore import Qt, QTimer, QPoint
-from PyQt5.QtGui import QGuiApplication, QFontDatabase, QFont, QIcon
+from PyQt5.QtGui import QGuiApplication, QFontDatabase, QFont, QIcon, QMovie
 import constants
 import llm_manager
 from PyQt5.QtWidgets import QDialog
