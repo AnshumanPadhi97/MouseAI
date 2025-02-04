@@ -3,7 +3,8 @@ AI at your fingertips. Literally ✨🤖👇
 
 Usage
 -----
-Select Text and Press 'Ctrl+Space'
+Select Text and 'Ctrl+Space'
+Simple Chat - 'Ctrl+Shift+C'
 
 Install
 ```
