@@ -1,9 +1,8 @@
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QPushButton, QHBoxLayout, QLineEdit
 from PyQt5.QtCore import Qt, QTimer, QPoint
-from PyQt5.QtGui import QGuiApplication, QFontDatabase, QFont, QIcon, QMovie
+from PyQt5.QtGui import QGuiApplication, QFontDatabase, QFont, QIcon
 import constants
 import llm_manager
-from PyQt5.QtWidgets import QDialog
 
 
 class FloatingWindow(QWidget):
@@ -35,7 +34,8 @@ class FloatingWindow(QWidget):
         text_widget.setLayout(self.chat_area)
         self.scroll_area.setWidget(text_widget)
         self.close_button = QPushButton("X")
-        self.close_button.setFixedSize(30, 30)
+        self.close_button.setFixedSize(
+            constants.BUTTON_SIZE, constants.BUTTON_SIZE)
         self.close_button.setStyleSheet("""
             QPushButton {
                 background-color: transparent;
@@ -53,7 +53,8 @@ class FloatingWindow(QWidget):
         self.close_button.clicked.connect(self.close)
         self.chat_button = QPushButton()
         self.chat_button.setIcon(QIcon(constants.CHAT_ICON))
-        self.chat_button.setFixedSize(30, 30)
+        self.chat_button.setFixedSize(
+            constants.BUTTON_SIZE, constants.BUTTON_SIZE)
         self.chat_button.setStyleSheet("""
             QPushButton {
                 background-color: white;
@@ -71,7 +72,8 @@ class FloatingWindow(QWidget):
         self.chat_button.clicked.connect(self.toggle_chat_input)
         self.minimize_button = QPushButton()
         self.minimize_button.setIcon(QIcon(constants.MINIMIZE_ICON))
-        self.minimize_button.setFixedSize(30, 30)
+        self.minimize_button.setFixedSize(
+            constants.BUTTON_SIZE, constants.BUTTON_SIZE)
         self.minimize_button.setStyleSheet("""
             QPushButton {
                 background-color: white;
@@ -89,7 +91,8 @@ class FloatingWindow(QWidget):
         self.minimize_button.clicked.connect(self.toggle_ui)
         self.drag_button = QPushButton()
         self.drag_button.setIcon(QIcon(constants.DRAG_ICON))
-        self.drag_button.setFixedSize(30, 30)
+        self.drag_button.setFixedSize(
+            constants.BUTTON_SIZE, constants.BUTTON_SIZE)
         self.drag_button.setStyleSheet("""
             QPushButton {
                 background-color: white;
@@ -116,10 +119,13 @@ class FloatingWindow(QWidget):
         layout.addWidget(self.scroll_area)
         self.chat_input_field = QLineEdit()
         self.chat_input_field.setFont(custom_font)
+        self.chat_input_field.setFixedHeight(constants.BUTTON_SIZE)
         self.chat_input_field.setPlaceholderText("Type your message...")
         self.chat_input_field.setStyleSheet(
-            "QLineEdit { font-size: 16px; padding: 5px; }")
+            f"QLineEdit {{ font-size: {constants.FONT_SIZE}px; padding: 5px; }}")
         self.send_button = QPushButton()
+        self.send_button.setFixedSize(
+            constants.BUTTON_SIZE, constants.BUTTON_SIZE)
         self.send_button.setIcon(QIcon(constants.SEND_ICON))
         self.send_button.setStyleSheet("""
             QPushButton {
@@ -136,6 +142,8 @@ class FloatingWindow(QWidget):
         """)
         self.send_button.clicked.connect(self.send_message)
         self.clear_button = QPushButton()
+        self.clear_button.setFixedSize(
+            constants.BUTTON_SIZE, constants.BUTTON_SIZE)
         self.clear_button.setIcon(QIcon(constants.CLEAR_ICON))
         self.clear_button.setStyleSheet("""
             QPushButton {
@@ -167,14 +175,14 @@ class FloatingWindow(QWidget):
         self.loading_label = QLabel("Processing...", self)
         self.loading_label.setFont(self.customFont)
         self.loading_label.setAlignment(Qt.AlignCenter)
-        self.loading_label.setStyleSheet("""
-            QLabel {
-                font-size: 20px;
+        self.loading_label.setStyleSheet(f"""
+            QLabel {{
+                font-size: {constants.FONT_SIZE}px;
                 color: white;
                 background-color: rgba(0, 0, 0, 128);
                 border-radius: 10px;
                 padding: 10px;
-            }
+            }}
         """)
         self.loading_label.setFixedSize(200, 100)
         self.loading_label.move(self.width() // 2 - 100,
@@ -225,38 +233,41 @@ class FloatingWindow(QWidget):
                 widget.deleteLater()
         self.messages = []
 
+    def show_chat(self):
+        self.handle_message(None, None)
+
     def add_message_to_chat(self, message, sender):
         label = QLabel(message)
         label.setWordWrap(True)
         label.setFont(self.customFont)
         label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        label.setStyleSheet("""
-            QLabel {
+        label.setStyleSheet(f"""
+            QLabel {{
                 background-color: lightgray;
                 border-radius: 10px;
                 padding: 8px;
-                font-size: 16px;
-            }
+                font-size: {constants.FONT_SIZE}px;
+            }}
         """)
         if sender == 'user':
             label.setAlignment(Qt.AlignRight)
-            label.setStyleSheet("""
-                QLabel {
+            label.setStyleSheet(f"""
+                QLabel {{
                     background-color: #e6f7ff;
                     border-radius: 10px;
                     padding: 8px;
-                    font-size: 16px;
-                }
+                    font-size: {constants.FONT_SIZE}px;
+                }}
             """)
         elif sender == 'assistant':
             label.setAlignment(Qt.AlignLeft)
-            label.setStyleSheet("""
-                QLabel {
+            label.setStyleSheet(f"""
+                QLabel {{
                     background-color: #cce5ff;
                     border-radius: 10px;
                     padding: 8px;
-                    font-size: 16px;
-                }
+                    font-size: {constants.FONT_SIZE}px;
+                }}
             """)
         self.chat_area.addWidget(label)
         self.show()
@@ -274,13 +285,16 @@ class FloatingWindow(QWidget):
                 "Message is empty. Please type something.")
 
     def handle_message(self, text, type):
-        if self.loading_label is None:
-            self.create_loading_label()
-        self.loading_label.setVisible(True)
-
         self.adjust_size_and_position()
-        text = text.strip()
+
+        if text is not None:
+            text = text.strip()
+
         if text:
+            if self.loading_label is None:
+                self.create_loading_label()
+            self.loading_label.setVisible(True)
+
             if type == "clipboard":
                 text = constants.TEXT_LLM_GENERAL_PROMPT + text + "?"
 

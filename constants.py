@@ -5,10 +5,10 @@ TEXT_LLM_GENERAL_PROMPT = "Please explain me on "
 # UI ELEMENTS
 FONT = "Asests\\Delius-Regular.ttf"
 FONT_DEFAULT = "Arial"
-FONT_SIZE = 20
 CHAT_ICON = "Asests\\comment.png"
 SEND_ICON = "Asests\\send.png"
 CLEAR_ICON = "Asests\\broom.png"
 MINIMIZE_ICON = "Asests\\minimize.png"
 DRAG_ICON = "Asests\\dir.png"
-DRAG_MASCOT_ICON = "Asests\\AI.gif"
+FONT_SIZE = 22
+BUTTON_SIZE = 50
