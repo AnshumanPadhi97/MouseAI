@@ -3,4 +3,4 @@
 <a href="https://www.flaticon.com/free-icons/clear" title="clear icons">Clear icons created by LAFS - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/minimize" title="minimize icons">Minimize icons created by Smashicons - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/move" title="move icons">Move icons created by Ayub Irawan - Flaticon</a>
-<a href="https://www.freepik.com/animated-icon/artificial-intelligence_11184195#fromView=search&page=5&position=45&uuid=2d366148-ab7b-435b-9070-05d07752d016">Icon by Freepik</a>
+<a href="https://www.flaticon.com/free-icons/paper" title="paper icons">Paper icons created by Gregor Cresnar - Flaticon</a>

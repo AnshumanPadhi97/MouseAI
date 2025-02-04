@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QPushButton, QHBoxLayout, QLineEdit
+from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QPushButton, QHBoxLayout, QLineEdit, QSizePolicy
 from PyQt5.QtCore import Qt, QTimer, QPoint
 from PyQt5.QtGui import QGuiApplication, QFontDatabase, QFont, QIcon
 import constants
@@ -165,7 +165,7 @@ class FloatingWindow(QWidget):
         self.chat_layout.addWidget(self.clear_button)
         layout.addLayout(self.chat_layout)
         self.setLayout(layout)
-        self.setFixedSize(800, 500)
+        self.setFixedSize(constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT)
         self.chat_layout.setContentsMargins(0, 0, 0, 0)
         self.chat_input_field.setVisible(False)
         self.send_button.setVisible(False)
@@ -249,6 +249,7 @@ class FloatingWindow(QWidget):
                 font-size: {constants.FONT_SIZE}px;
             }}
         """)
+
         if sender == 'user':
             label.setAlignment(Qt.AlignRight)
             label.setStyleSheet(f"""
