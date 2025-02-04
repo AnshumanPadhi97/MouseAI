@@ -1,6 +1,0 @@
-<a href="https://www.flaticon.com/free-icons/message" title="message icons">Message icons created by apien - Flaticon</a>
-<a href="https://www.flaticon.com/free-icons/send" title="send icons">Send icons created by feen - Flaticon</a>
-<a href="https://www.flaticon.com/free-icons/clear" title="clear icons">Clear icons created by LAFS - Flaticon</a>
-<a href="https://www.flaticon.com/free-icons/minimize" title="minimize icons">Minimize icons created by Smashicons - Flaticon</a>
-<a href="https://www.flaticon.com/free-icons/move" title="move icons">Move icons created by Ayub Irawan - Flaticon</a>
-<a href="https://www.flaticon.com/free-icons/paper" title="paper icons">Paper icons created by Gregor Cresnar - Flaticon</a>
