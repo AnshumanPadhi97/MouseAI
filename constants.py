@@ -6,7 +6,6 @@ def load_constants():
         with open('settings.json', 'r') as f:
             settings = json.load(f)
             constants = {
-                'MODEL_LIST': settings.get('MODEL_LIST', ["llama3.2:latest", "llava:latest"]),
                 'TEXT_LLM_MODEL': settings.get('TEXT_LLM_MODEL', "llama3.2:latest"),
                 'TEXT_LLM_GENERAL_PROMPT': settings.get('TEXT_LLM_GENERAL_PROMPT', "Please explain me on "),
                 'CODE_LLM_GENERAL_PROMPT': settings.get('CODE_LLM_GENERAL_PROMPT', "Please complete/fix/refactor the code "),
@@ -25,7 +24,6 @@ constants = load_constants()
 TEXT_LLM_MODEL = constants['TEXT_LLM_MODEL']
 TEXT_LLM_GENERAL_PROMPT = constants['TEXT_LLM_GENERAL_PROMPT']
 CODE_LLM_GENERAL_PROMPT = constants['CODE_LLM_GENERAL_PROMPT']
-MODEL_LIST = constants['MODEL_LIST']
 FONT_SIZE = constants['FONT_SIZE']
 BUTTON_SIZE = constants['BUTTON_SIZE']
 WINDOW_HEIGHT = constants['WINDOW_HEIGHT']
