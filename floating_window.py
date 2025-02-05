@@ -3,6 +3,7 @@ from PyQt5.QtCore import Qt, QTimer, QPoint
 from PyQt5.QtGui import QGuiApplication, QFontDatabase, QFont, QIcon
 import constants
 import llm_manager
+import settingsDialog
 
 
 class FloatingWindow(QWidget):
@@ -13,12 +14,13 @@ class FloatingWindow(QWidget):
         self.loading_label = None
 
     def init_ui(self):
-        font_id = QFontDatabase.addApplicationFont(constants.FONT)
+        font_id = QFontDatabase.addApplicationFont(
+            "Asests\\Delius-Regular.ttf")
         if font_id != -1:
             custom_font = QFont(QFontDatabase.applicationFontFamilies(
                 font_id)[0], constants.FONT_SIZE)
         else:
-            custom_font = QFont(constants.FONT_DEFAULT, constants.FONT_SIZE)
+            custom_font = QFont("Arial", constants.FONT_SIZE)
         self.customFont = custom_font
         self.setWindowFlags(
             Qt.WindowStaysOnTopHint |
@@ -52,7 +54,7 @@ class FloatingWindow(QWidget):
         """)
         self.close_button.clicked.connect(self.close)
         self.chat_button = QPushButton()
-        self.chat_button.setIcon(QIcon(constants.CHAT_ICON))
+        self.chat_button.setIcon(QIcon("Asests\\comment.png"))
         self.chat_button.setFixedSize(
             constants.BUTTON_SIZE, constants.BUTTON_SIZE)
         self.chat_button.setStyleSheet("""
@@ -71,7 +73,7 @@ class FloatingWindow(QWidget):
         """)
         self.chat_button.clicked.connect(self.toggle_chat_input)
         self.minimize_button = QPushButton()
-        self.minimize_button.setIcon(QIcon(constants.MINIMIZE_ICON))
+        self.minimize_button.setIcon(QIcon("Asests\\minimize.png"))
         self.minimize_button.setFixedSize(
             constants.BUTTON_SIZE, constants.BUTTON_SIZE)
         self.minimize_button.setStyleSheet("""
@@ -90,7 +92,7 @@ class FloatingWindow(QWidget):
         """)
         self.minimize_button.clicked.connect(self.toggle_ui)
         self.drag_button = QPushButton()
-        self.drag_button.setIcon(QIcon(constants.DRAG_ICON))
+        self.drag_button.setIcon(QIcon("Asests\\dir.png"))
         self.drag_button.setFixedSize(
             constants.BUTTON_SIZE, constants.BUTTON_SIZE)
         self.drag_button.setStyleSheet("""
@@ -109,11 +111,31 @@ class FloatingWindow(QWidget):
         self.drag_button.mousePressEvent = self.start_drag
         self.drag_button.mouseMoveEvent = self.drag_move
         self.drag_button.mouseReleaseEvent = self.end_drag
+        self.settings_button = QPushButton()
+        self.settings_button.setIcon(QIcon("Asests\\settings.png"))
+        self.settings_button.setFixedSize(
+            constants.BUTTON_SIZE, constants.BUTTON_SIZE)
+        self.settings_button.setStyleSheet("""
+            QPushButton {
+                background-color: white;
+                border: 2px solid white;
+                color: white;
+                font-size: 16px;
+                font-weight: bold;
+                border-radius: 5px;
+            }
+            QPushButton:hover {
+                background-color: #4d94ff;
+                color: white;
+            }
+        """)
+        self.settings_button.clicked.connect(self.open_settings_dialog)
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.chat_button)
         button_layout.addStretch()
         button_layout.addWidget(self.drag_button)
         button_layout.addWidget(self.minimize_button)
+        button_layout.addWidget(self.settings_button)
         button_layout.addWidget(self.close_button)
         layout.addLayout(button_layout)
         layout.addWidget(self.scroll_area)
@@ -126,7 +148,7 @@ class FloatingWindow(QWidget):
         self.send_button = QPushButton()
         self.send_button.setFixedSize(
             constants.BUTTON_SIZE, constants.BUTTON_SIZE)
-        self.send_button.setIcon(QIcon(constants.SEND_ICON))
+        self.send_button.setIcon(QIcon("Asests\\send.png"))
         self.send_button.setStyleSheet("""
             QPushButton {
                 background-color: white;
@@ -144,7 +166,7 @@ class FloatingWindow(QWidget):
         self.clear_button = QPushButton()
         self.clear_button.setFixedSize(
             constants.BUTTON_SIZE, constants.BUTTON_SIZE)
-        self.clear_button.setIcon(QIcon(constants.CLEAR_ICON))
+        self.clear_button.setIcon(QIcon("Asests\\broom.png"))
         self.clear_button.setStyleSheet("""
             QPushButton {
                 background-color: white;
@@ -170,6 +192,10 @@ class FloatingWindow(QWidget):
         self.chat_input_field.setVisible(False)
         self.send_button.setVisible(False)
         self.clear_button.setVisible(False)
+
+    def open_settings_dialog(self):
+        settings_dialog = settingsDialog.SettingsDialog(self)
+        settings_dialog.exec_()
 
     def create_loading_label(self):
         self.loading_label = QLabel("Processing...", self)
@@ -297,7 +323,7 @@ class FloatingWindow(QWidget):
             self.loading_label.setVisible(True)
 
             if type == "clipboard":
-                text = constants.TEXT_LLM_GENERAL_PROMPT + text + "?"
+                text = constants.TEXT_LLM_GENERAL_PROMPT + " " + text + "?"
 
             self.add_message_to_chat(text, 'user')
             self.messages.append({
