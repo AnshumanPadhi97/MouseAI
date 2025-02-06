@@ -1,5 +1,0 @@
-keyboard==0.13.5
-pywin32==308
-PyQt5==5.15.11
-ollama==0.4.7
-psutil==6.1.1
