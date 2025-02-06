@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QPushButton, QHBoxLayout, QLineEdit, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QPushButton, QHBoxLayout, QLineEdit
 from PyQt5.QtCore import Qt, QTimer, QPoint
 from PyQt5.QtGui import QGuiApplication, QFontDatabase, QFont, QIcon
 import constants
