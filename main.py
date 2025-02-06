@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QThread
-from text_monitor import TextMonitor
+from Core.text_monitor import TextMonitor
 
 
 def main():
@@ -11,7 +11,6 @@ def main():
     monitor.moveToThread(monitor_thread)
     monitor_thread.started.connect(monitor.start_monitoring)
     monitor_thread.start()
-
     sys.exit(app.exec_())
 
 

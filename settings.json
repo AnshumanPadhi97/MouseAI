@@ -1,7 +1,6 @@
 {
   "TEXT_LLM_MODEL": "llama3.2:latest",
   "TEXT_LLM_GENERAL_PROMPT": "Please explain me on",
-  "CODE_LLM_GENERAL_PROMPT": "Please complete/fix/refactor the code",
   "FONT_SIZE": 22,
   "BUTTON_SIZE": 50,
   "WINDOW_HEIGHT": 600,
