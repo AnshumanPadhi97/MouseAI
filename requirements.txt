@@ -3,3 +3,5 @@ pywin32==308
 PyQt5==5.15.11
 ollama==0.4.7
 psutil==6.1.1
+langchain-community==0.3.16
+langchain-ollama==0.2.3
