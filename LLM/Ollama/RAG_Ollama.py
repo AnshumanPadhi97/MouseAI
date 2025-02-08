@@ -4,6 +4,8 @@ from langchain_core.vectorstores import InMemoryVectorStore
 from langchain_ollama import OllamaEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import OllamaLLM
+from langchain_community.document_loaders.csv_loader import CSVLoader
+import os
 
 import Settings.constants as constants
 
@@ -44,9 +46,15 @@ def rag_generate_answer(messages, user_query):
 def rag_process_document(file_paths):
     try:
         documents = []
+
         for file_path in file_paths:
-            loader = PDFPlumberLoader(file_path)
-            documents.extend(loader.load())
+            if is_pdf(file_path):
+                loader = PDFPlumberLoader(file_path)
+                documents.extend(loader.load())
+            elif is_csv(file_path):
+                loader = CSVLoader(file_path)
+                documents.extend(loader.load())
+
         text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000,
             chunk_overlap=200,
@@ -58,3 +66,11 @@ def rag_process_document(file_paths):
 
     except Exception as e:
         return False
+
+
+def is_csv(file_path):
+    return os.path.splitext(file_path)[1].lower() == '.csv'
+
+
+def is_pdf(file_path):
+    return os.path.splitext(file_path)[1].lower() == '.pdf'
