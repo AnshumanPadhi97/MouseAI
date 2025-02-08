@@ -109,7 +109,12 @@ class SettingsDialog(QDialog):
         model_names = llm_manager.get_models()
         self.model_selection_input.clear()
         self.model_selection_input.addItems(model_names)
-        if model_names:
+        saved_model = constants.TEXT_LLM_MODEL
+
+        if saved_model and saved_model in model_names:
+            index = model_names.index(saved_model)
+            self.model_selection_input.setCurrentIndex(index)
+        elif model_names:
             self.model_selection_input.setCurrentIndex(0)
 
     def delete_model(self):

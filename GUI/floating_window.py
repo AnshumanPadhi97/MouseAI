@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QPushButton, QHBoxLayout, QLineEdit
+from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QScrollArea, QPushButton, QHBoxLayout, QLineEdit, QTextEdit
 from PyQt5.QtCore import Qt, QTimer, QPoint
 from PyQt5.QtGui import QGuiApplication, QFontDatabase, QFont, QIcon
 import Settings.constants as constants
@@ -9,11 +9,13 @@ import GUI.settingsDialog as settingsDialog
 class FloatingWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.init_ui()
         self.messages = []
+        self.file_paths = []
         self.loading_label = None
+        self.init_ui()
 
     def init_ui(self):
+        self.setAcceptDrops(True)
         font_id = QFontDatabase.addApplicationFont(
             "Asests\\Delius-Regular.ttf")
         if font_id != -1:
@@ -139,12 +141,13 @@ class FloatingWindow(QWidget):
         button_layout.addWidget(self.close_button)
         layout.addLayout(button_layout)
         layout.addWidget(self.scroll_area)
-        self.chat_input_field = QLineEdit()
+        self.chat_input_field = QTextEdit()
         self.chat_input_field.setFont(custom_font)
-        self.chat_input_field.setFixedHeight(constants.BUTTON_SIZE)
+        self.chat_input_field.setFixedHeight(constants.BUTTON_SIZE * 2)
         self.chat_input_field.setPlaceholderText("Type your message...")
         self.chat_input_field.setStyleSheet(
-            f"QLineEdit {{ font-size: {constants.FONT_SIZE}px; padding: 5px; }}")
+            f"QTextEdit {{ font-size: {constants.FONT_SIZE}px; padding: 5px; }}")
+        self.chat_input_field.setFocus()
         self.send_button = QPushButton()
         self.send_button.setFixedSize(
             constants.BUTTON_SIZE, constants.BUTTON_SIZE)
@@ -228,6 +231,8 @@ class FloatingWindow(QWidget):
         self.chat_input_field.setVisible(not is_visible)
         self.send_button.setVisible(not is_visible)
         self.clear_button.setVisible(not is_visible)
+        if not is_visible:
+            self.chat_input_field.setFocus()
 
     def toggle_ui(self):
         self.close_button.setVisible(True)
@@ -255,9 +260,11 @@ class FloatingWindow(QWidget):
             if widget:
                 widget.deleteLater()
         self.messages = []
+        self.file_paths = []
+        llm_manager.clear_rag()
 
     def show_chat(self):
-        self.handle_message(None, None)
+        self.handle_message(None)
 
     def add_message_to_chat(self, message, sender):
         label = QLabel(message)
@@ -293,22 +300,55 @@ class FloatingWindow(QWidget):
                     font-size: {constants.FONT_SIZE}px;
                 }}
             """)
+
         self.chat_area.addWidget(label)
         self.show()
 
+    def add_system_message(self, message):
+        system_label = QLabel(message)
+        system_label.setWordWrap(True)
+        system_label.setFont(self.customFont)
+        system_label.setAlignment(Qt.AlignLeft)
+        system_label.setStyleSheet(f"""
+            QLabel {{
+                font-size: {constants.FONT_SIZE - 2}px;
+                font-style: italic;
+                color: gray;
+                background-color: transparent;
+                padding: 10px;
+            }}
+        """)
+        self.chat_area.addWidget(system_label)
+        self.show()
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        file_urls = event.mimeData().urls()
+        if file_urls:
+            self.file_paths = [url.toLocalFile() for url in file_urls]
+            self.handle_files()
+
     def show_text(self, text):
-        self.handle_message(text, 'clipboard')
+        self.handle_message(
+            constants.TEXT_LLM_GENERAL_PROMPT + " " + text + "?")
 
     def send_message(self):
-        user_message = self.chat_input_field.text().strip()
+        user_message = self.chat_input_field.toPlainText().strip()
         if user_message:
-            self.handle_message(user_message, 'chat')
+            self.handle_message(user_message)
             self.chat_input_field.clear()
         else:
             self.chat_input_field.setText(
                 "Message is empty. Please type something.")
 
-    def handle_message(self, text, type):
+    # Handle messages/files in these function for LLM interaction
+
+    def handle_message(self, text):
         self.adjust_size_and_position()
 
         if text is not None:
@@ -319,26 +359,37 @@ class FloatingWindow(QWidget):
                 self.create_loading_label()
             self.loading_label.setVisible(True)
 
-            if type == "clipboard":
-                text = constants.TEXT_LLM_GENERAL_PROMPT + " " + text + "?"
-
             self.add_message_to_chat(text, 'user')
             self.messages.append({
                 'role': 'user',
                 'content': text
             })
-            QTimer.singleShot(100, lambda: self.process_text_llm())
+
+            QTimer.singleShot(100, lambda: self.process_llm(text))
         else:
             self.show()
 
-    def process_text_llm(self):
-        llm_response = llm_manager.llm_chat_text_response(self.messages)
+    def process_llm(self, current_text):
+        response = llm_manager.llm_response(
+            self.file_paths, self.messages, current_text)
 
         if self.loading_label:
             self.loading_label.setVisible(False)
 
         self.messages.append({
             'role': 'assistant',
-            'content': llm_response
+            'content': response
         })
-        self.add_message_to_chat(llm_response, 'assistant')
+        self.add_message_to_chat(response, 'assistant')
+
+    def handle_files(self):
+        self.process_llm_files()
+
+    def process_llm_files(self):
+        response = llm_manager.process_rag_files(self.file_paths)
+        message = ''
+        if response == True:
+            message = "Documents are ready for Q&A"
+        else:
+            message = "Unable to process documents/No documents found to process"
+        self.add_system_message(message)

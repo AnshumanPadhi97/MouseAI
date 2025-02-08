@@ -3,6 +3,9 @@ from ollama import ChatResponse
 import Settings.constants as constants
 import psutil
 import ollama
+from . import RAG_Ollama
+
+# CHAT
 
 
 def get_ollama_chat_response(messages):
@@ -32,4 +35,18 @@ def delete_ollama_model(selected_model):
     try:
         ollama.delete(selected_model)
     except Exception as e:
-        print(f"{e}")
+        return
+
+# RAG
+
+
+def query_rag(messages, current_msg):
+    return RAG_Ollama.rag_generate_answer(messages, current_msg)
+
+
+def process_rag(file_paths):
+    return RAG_Ollama.rag_process_document(file_paths)
+
+
+def clear_memory():
+    RAG_Ollama.clear_memory()
