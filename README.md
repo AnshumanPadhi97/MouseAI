@@ -4,8 +4,6 @@
 
 MouseAI has been created with **Ollama**, a framework for building AI-powered applications.
 
-[Watch the demo video on Google Drive](https://drive.google.com/file/d/1AbCdeFgHijkLmNOpQrStUvWxYz/view?usp=sharing)
-
 ---
 
 ## Features
