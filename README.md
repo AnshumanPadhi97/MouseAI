@@ -4,9 +4,14 @@
 
 MouseAI has been created with **Ollama**, a framework for building AI-powered applications.
 
+General Chat - 
 ![alt text](https://github.com/AnshumanPadhi97/MouseAI/blob/master/Screenshot%202025-02-09%20155702.png?raw=true)
+
+Chat with PDF - 
 ![alt text](https://github.com/AnshumanPadhi97/MouseAI/blob/master/Screenshot%202025-02-09%20155741.png?raw=true)
 ![alt text](https://github.com/AnshumanPadhi97/MouseAI/blob/master/Screenshot%202025-02-09%20155808.png?raw=true)
+
+Learn on highlighted text -
 ![alt text](https://github.com/AnshumanPadhi97/MouseAI/blob/master/Screenshot%202025-02-09%20155835.png?raw=true)
 
 ---
