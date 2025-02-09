@@ -58,18 +58,20 @@ To run the tool, execute the following command:
 python ./main.py
 ```
 2. Chat Interface:
-
+```bash
 Use Ctrl+Shift+C to enter a simple chat interface.
-
+```
 3. Extract Text from PDF & CSV:
-
+```bash
 Drag and drop PDF or CSV files into the interface.
 Use the AI chat to query or summarize content from these documents.
-
+```
 4. Highlight and Explain Text:
-
+```bash
 Highlight specific text within the document.
 Press Ctrl+Space to have the AI explain the selected text or provide additional context or insights.
-
+```
 5. Exit the Application:
+```bash
 Press Ctrl+Q to exit the application.
+```
